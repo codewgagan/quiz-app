@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// import Result from './components/results'
+import Result from './results';
 
 function Quiz(){
         const questionBank = [
@@ -29,6 +31,9 @@ function Quiz(){
         //represnt a current question using numbers
         const [currentQuestion, setCurrentQuestion] = useState(0);
 
+        // Code to check whether quiz is finished and UI changes after quiz completion
+        const [isQuizFinished, setIsQuizFinished] = useState(false);
+
         const selectedAnswer = userAnswers[currentQuestion];//null, option
         function handleSelectOption (option){
             // console.log(option);
@@ -44,7 +49,12 @@ function Quiz(){
 
 //function go to next
 function goToNext(){
-    setCurrentQuestion(currentQuestion + 1);
+    if(currentQuestion === questionBank.length -1){
+        setIsQuizFinished(true);
+    } else{
+            setCurrentQuestion(currentQuestion + 1);
+        }
+    // setCurrentQuestion(currentQuestion + 1);
 }
 
 //function go to prev
@@ -53,6 +63,18 @@ function goToPrev(){
         setCurrentQuestion(currentQuestion - 1);
     }
 }
+
+    function restartQuiz(){
+        setUserAnswers (initialAnsewers);
+        setCurrentQuestion(0);
+        setIsQuizFinished(false);
+
+    }
+
+    if(isQuizFinished){
+        return <Result userAnswers={userAnswers} questionBank={questionBank} restartQuiz={restartQuiz}/>;//props
+    }
+
     return (
     <div>
         <h2>Question {currentQuestion + 1 }</h2> {/* Heading */}
